@@ -5,12 +5,11 @@ import {Login} from './components/Login'
 function App() {
   return (
     <div className="App">
-      {/* <Router>
+      <Router>
         <Switch>
           <Route exact path="/" component={Login} />
         </Switch>
-      </Router> */}
-      <Login/>
+      </Router>
     </div>
   );
 }
