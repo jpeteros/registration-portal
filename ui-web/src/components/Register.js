@@ -1,4 +1,4 @@
-import React, {useContext, useState, useCallback, useReducer} from 'react';
+import React, {useContext, useState, useCallback, useReducer, useEffect} from 'react';
 import {GlobalContext} from '../context/GlobalState';
 import {Link, useHistory} from 'react-router-dom';
 import { useDropzone } from "react-dropzone";
@@ -21,9 +21,40 @@ const uploadFileMutation = gql`
   }
 `;
 
+const thumbsContainer = {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 16
+  };
+  
+  const thumb = {
+    display: 'inline-flex',
+    borderRadius: 2,
+    border: '1px solid #eaeaea',
+    marginBottom: 8,
+    marginRight: 8,
+    width: '100%',
+    height: 100,
+    padding: 4,
+    boxSizing: 'border-box'
+  };
+  
+  const thumbInner = {
+    display: 'flex',
+    minWidth: 0,
+    overflow: 'hidden'
+  };
+  
+  const img = {
+    display: 'block',
+    width: 'auto',
+    height: '100%'
+  };  
+
 export const Register = () => {
     const [name,  setName] = useState('');
-    const [fileName,  setFile] = useState('');
+    const [files, setFiles] = useState([]);
     const [userInput, setUserInput] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
@@ -59,17 +90,36 @@ export const Register = () => {
         refetchQueries: [{ query: filesQuery }]
     });
 
-    const onDrop = useCallback(
+    const onDropAccepted = useCallback(
         ([file]) => {
-         // uploadFile({ variables: { file } });
-         setFile(file.name);
-         console.log(file.name);
+            uploadFile({ variables: { file } });
         }, [uploadFile]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
-        onDrop,
-        accept: 'image/*'
+        accept: 'image/*',
+        onDropAccepted,
+        onDrop: acceptedFiles => {
+            setFiles(acceptedFiles.map(file => Object.assign(file, {
+              preview: URL.createObjectURL(file)
+            })));
+        }
     });
+
+    const thumbs = files.map(file => (
+        <div style={thumb} key={file.name}>
+          <div style={thumbInner}>
+            <img
+              src={file.preview}
+              style={img}
+            />
+          </div>
+        </div>
+    ));
+    
+      useEffect(() => () => {
+        // Make sure to revoke the data uris to avoid memory leaks
+        files.forEach(file => URL.revokeObjectURL(file.preview));
+      }, [files]);
     
     return (
        <Form onSubmit={onSubmit}>
@@ -90,8 +140,9 @@ export const Register = () => {
                     <p>Drag 'n' drop some files here, or click to select files</p>
                 )}
             </div>
-                <h1>{fileName}</h1>
-
+            <aside style={thumbsContainer}>
+                {thumbs}
+            </aside>
            <Button type="submit">Submit</Button>
            <Link to="/" className="btn btn-danger ml-2"> Cancel</Link>
        </Form>
