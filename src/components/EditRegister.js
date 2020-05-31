@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {GlobalProvider, GlobalContext} from '../context/GlobalState';
+import {GlobalContext} from '../context/GlobalState';
 import {Link, useHistory} from 'react-router-dom';
 import {
     Form,

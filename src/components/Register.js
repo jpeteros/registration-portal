@@ -1,6 +1,11 @@
-import React, {useContext, useState} from 'react';
-import {GlobalProvider, GlobalContext} from '../context/GlobalState';
-import {Link, useHistory} from 'react-router-dom';;
+import React, {useContext, useState, useCallback} from 'react';
+import {GlobalContext} from '../context/GlobalState';
+import {Link, useHistory} from 'react-router-dom';
+import { useDropzone } from "react-dropzone";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
+import { filesQuery } from "../service/Files";
+import '../index.css';
 import { v4 as uuid} from 'uuid';
 import {
     Form,
@@ -9,6 +14,12 @@ import {
     Input,
     Button
 } from 'reactstrap';
+
+const uploadFileMutation = gql`
+  mutation UploadFile($file: Upload!) {
+    uploadFile(file: $file)
+  }
+`;
 
 export const Register = () => {
     const [name,  setName] = useState('');
@@ -34,6 +45,18 @@ export const Register = () => {
         setPassport(e.target.value);
     }
 
+    const [uploadFile] = useMutation(uploadFileMutation, {
+        refetchQueries: [{ query: filesQuery }]
+      });
+      const onDrop = useCallback(
+        ([file]) => {
+          uploadFile({ variables: { file } });
+        },
+        [uploadFile]
+      );
+      const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+    
+
     return (
        <Form onSubmit={onSubmit}>
            <FormGroup>
@@ -44,6 +67,15 @@ export const Register = () => {
                <Label> Passport/Ikad Number</Label>
                <Input type="text" value={passport} onChange={onChangePassport} placeholder="Enter Passport/Ikad"></Input>
            </FormGroup>
+
+           <div className="image-dropzone mb-2" {...getRootProps()}>
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                    <p>Drop the files here ...</p>
+                ) : (
+                    <p>Drag 'n' drop some files here, or click to select files</p>
+                )}
+            </div>
 
            <Button type="submit">Submit</Button>
            <Link to="/" className="btn btn-danger ml-2"> Cancel</Link>

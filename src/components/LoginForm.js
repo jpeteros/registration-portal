@@ -1,7 +1,6 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {GlobalProvider, GlobalContext} from '../context/GlobalState';
-import {Link, useHistory} from 'react-router-dom';;
-import { v4 as uuid} from 'uuid';
+import React, {useContext, useState} from 'react';
+import { GlobalContext} from '../context/GlobalState';
+import {Link, useHistory} from 'react-router-dom';
 import {
     Form,
     FormGroup,

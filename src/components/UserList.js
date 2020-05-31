@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {GlobalProvider, GlobalContext} from '../context/GlobalState';
+import {GlobalContext} from '../context/GlobalState';
 import {Link} from 'react-router-dom';
 import {
     ListGroup,

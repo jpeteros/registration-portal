@@ -4,6 +4,7 @@ import {Login} from './components/Login';
 import {LoginForm} from './components/LoginForm';
 import {Register} from './components/Register';
 import {EditRegister} from './components/EditRegister';
+
 import {GlobalProvider} from './context/GlobalState';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
