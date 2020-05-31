@@ -40,14 +40,14 @@ export const EditRegister = (props) => {
     return (
         <Form onSubmit={onSubmit}>
             <FormGroup>
-               <Label> Passport/Ikad Number</Label>
-               <Input type="text" value={selectedUser.passport} onChange={onChange} name="passport"  placeholder="Enter Passport/Ikad"></Input>
-            </FormGroup>
-            <FormGroup>
                 <Label>Name</Label>
                 <Input type="text" value={selectedUser.name} onChange={onChange} name="name" placeholder="Enter user" required></Input>
             </FormGroup>
-        
+            <FormGroup>
+               <Label> Passport/Ikad Number</Label>
+               <Input type="text" value={selectedUser.passport} onChange={onChange} name="passport"  placeholder="Enter Passport/Ikad"></Input>
+            </FormGroup>
+           
             <Button type="submit">Edit Name</Button>
             <Link to="/" className="btn btn-danger ml-2">Cancel</Link>
         </Form>
