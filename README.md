@@ -1,5 +1,5 @@
 # Welcome to Identity Registration Portal
-- A simple crud app using in memory cache with React Hooks & Context API. Along with  nodeJS backend apollo server. 
+- A simple crud app using in memory cache with React Hooks & Context API. Along with nodeJS backend apollo server for uploading. 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
